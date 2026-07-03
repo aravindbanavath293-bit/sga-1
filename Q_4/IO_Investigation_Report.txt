@@ -1,0 +1,82 @@
+Q4 - File Access and I/O Investigation
+====================================
+
+Commands Executed and Outputs
+=============================
+
+1) echo "sample log line" > app.log
+Output:
+(no output)
+Explanation: This created a sample log file that could be used for file descriptor investigation.
+
+2) lsof | head -n 20
+Output:
+COMMAND PID TID TASKCMD USER FD TYPE DEVICE SIZE/OFF NODE NAME
+docker-init 1 codespace cwd DIR 0,46 4096 1101733 /
+docker-init 1 codespace rtd DIR 0,46 4096 1101733 /
+docker-init 1 codespace txt REG 8,1 845272 774629 /usr/sbin/docker-init
+...
+Explanation: This listed open files and showed that the shell and container processes had several active file descriptors.
+
+3) exec 3<app.log
+Output:
+(no output)
+Explanation: This opened the app.log file and assigned it to file descriptor 3 for later use.
+
+4) lsof -p $$
+Output:
+...
+bash 17530 codespace 3r REG 7,4 16 1310807 /workspaces/sga-1/Q_4/app.log
+Explanation: This verified that the current shell had the app.log file open on file descriptor 3.
+
+5) ls -l /proc/$$/fd | grep app.log
+Output:
+lr-x------ 1 codespace codespace 64 Jul 3 13:52 3 -> /workspaces/sga-1/Q_4/app.log
+Explanation: This displayed the current process file descriptors and confirmed that descriptor 3 pointed to app.log.
+
+6) ls -l /proc/$$/fd
+Output:
+total 0
+lrwx------ 0 -> /dev/pts/4
+lrwx------ 1 -> /dev/pts/4
+lrwx------ 2 -> /dev/pts/4
+lrwx------ 255 -> /dev/pts/4
+lr-x------ 3 -> /workspaces/sga-1/Q_4/app.log
+l-wx------ 6 -> /dev/null
+Explanation: This showed the file descriptors used by the shell process.
+
+7) ls -l > stdout.txt
+Output:
+(no output)
+Explanation: This redirected the standard output of ls into stdout.txt.
+
+8) ls /not_a_real_path 2> stderr.txt
+Output:
+(no output)
+Explanation: This redirected the error output of the missing path command into stderr.txt.
+
+9) (ls -l && ls /not_a_real_path) > combined.txt 2>&1
+Output:
+(no output)
+Explanation: This combined normal and error output into one file using redirection operators.
+
+10) ulimit -a
+Output:
+real-time non-blocking time (microseconds, -R) unlimited
+core file size (blocks, -c) unlimited
+...
+open files (-n) 524288
+...
+Explanation: This displayed system resource limits, including the maximum number of open files.
+
+11) exec 3<&-
+Output:
+(no output)
+Explanation: This closed the file descriptor that had been opened for app.log.
+
+Observations
+============
+- File descriptors are numeric handles used by the shell and processes to access files and devices.
+- Standard output, standard error, and file descriptors can be redirected to files or combined.
+- The shell showed that app.log was opened on descriptor 3 and later closed successfully.
+- The system limit for open files was very high, showing that the environment can handle many simultaneous file accesses.

@@ -1,0 +1,68 @@
+Q1 - Linux Environment Verification
+=================================
+
+Commands Executed and Outputs
+=============================
+
+1) whoami
+Output:
+codespace
+Explanation: This confirmed the active Linux username for the current session.
+
+2) groups
+Output:
+codespace pipx python oryx golang docker sdkman rvm php conda nvs nvm hugo ssh
+Explanation: This listed the groups associated with the current user account.
+
+3) echo "$SHELL"
+Output:
+/bin/bash
+Explanation: This verified the default login shell being used by the user.
+
+4) pwd
+Output:
+/
+Explanation: This showed the current working directory at the start of the lab.
+
+5) ls -ls
+Output:
+total 88
+0 lrwxrwxrwx 1 root root 7 Apr 22 2024 bin -> usr/bin
+4 drwxr-xr-x 2 root root 4096 Jul 10 2025 bin.usr-is-merged
+4 drwxr-xr-x 2 root root 4096 Apr 22 2024 boot
+0 drwxr-xr-x 13 root root 3940 Jul 3 13:26 dev
+8 drwxr-xr-x 1 root root 4096 Jul 3 13:26 etc
+4 drwxrwsr-x 3 codespace golang 4096 Apr 6 00:22 go
+8 drwxr-xr-x 1 root root 4096 Jul 3 13:26 home
+0 lrwxrwxrwx 1 root root 7 Apr 22 2024 lib -> usr/lib
+4 drwxr-xr-x 2 root root 4096 Nov 14 2024 lib.usr-is-merged
+0 lrwxrwxrwx 1 root root 9 Mar 11 11:59 lib32 -> usr/lib32
+0 lrwxrwxrwx 1 root root 9 Apr 22 2024 lib64 -> usr/lib64
+4 drwxr-xr-x 2 root root 4096 Feb 10 14:05 media
+4 drwxr-xr-x 2 root root 4096 Feb 10 14:05 mnt
+4 drwxrwsr-x 1 codespace oryx 4096 Jul 3 13:26 opt
+0 dr-xr-xr-x 238 root root 0 Jul 3 13:26 proc
+4 drwx------ 1 root root 4096 Mar 11 12:16 root
+4 drwxr-xr-x 1 root root 4096 Jul 3 13:26 run
+0 lrwxrwxrwx 1 root root 8 Apr 22 2024 sbin -> usr/sbin
+4 drwxr-xr-x 2 root root 4096 Jul 10 2025 sbin.usr-is-merged
+4 drwxr-xr-x 2 root root 4096 Feb 10 14:05 srv
+0 dr-xr-xr-x 12 root root 0 Jul 3 13:20 sys
+4 drwxr-xwt+ 4 root root 4096 Jul 3 13:27 tmp
+8 drwxr-xr-x 1 root root 4096 Mar 11 11:59 usr
+8 drwxr-xr-x 1 root root 4096 Jul 3 13:26 var
+4 drwxr-xr-x 5 root root 4096 Jul 3 13:24 vscode
+4 drwxr-xrwx+ 5 codespace root 4096 Jul 3 13:26 workspaces
+Explanation: This listed the files and directories visible from the current directory and confirmed the workspace layout.
+
+6) curl -s --max-time 10 https://youtube.com > /dev/null && echo "Network: youtube.com reachable"
+Output:
+Network: youtube.com reachable
+Explanation: This verified that the environment had outbound network connectivity to YouTube.
+
+Observations
+============
+- The active user is codespace and the account belongs to multiple groups.
+- The current shell is /bin/bash and the current directory is /.
+- The workspace contains the repository folders under /workspaces/sga-1.
+- Network connectivity was confirmed successfully.

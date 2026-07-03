@@ -1,0 +1,61 @@
+Q3 - File System and Link Analysis
+=================================
+
+Commands Executed and Outputs
+=============================
+
+1) rm -f original.txt hardlink.txt symlink.txt
+2) echo "Linux link test file" > original.txt
+3) ln original.txt hardlink.txt
+4) ln -s original.txt symlink.txt
+5) ls -li
+Output:
+total 8
+1310805 -rw-rw-rw- 2 codespace codespace 21 Jul 3 13:49 hardlink.txt
+1310805 -rw-rw-rw- 2 codespace codespace 21 Jul 3 13:49 original.txt
+1310806 lrwxrwxrwx 1 codespace codespace 12 Jul 3 13:49 symlink.txt -> original.txt
+Explanation: This showed the inode numbers and link types for the original file, hard link, and symbolic link.
+
+6) stat original.txt hardlink.txt symlink.txt
+Output:
+File: original.txt
+Size: 21 Blocks: 8 IO Block: 4096 regular file
+Device: 7,4 Inode: 1310805 Links: 2
+...
+File: hardlink.txt
+Size: 21 Blocks: 8 IO Block: 4096 regular file
+Device: 7,4 Inode: 1310805 Links: 2
+...
+File: symlink.txt -> original.txt
+Size: 12 Blocks: 0 IO Block: 4096 symbolic link
+Device: 7,4 Inode: 1310806 Links: 1
+Explanation: This collected metadata to compare the properties of hard links and symbolic links.
+
+7) cat original.txt
+8) cat hardlink.txt
+9) cat symlink.txt
+Output:
+Linux link test file
+Explanation: This confirmed that all three references displayed the same content.
+
+10) rm original.txt
+11) ls -li
+Output:
+total 4
+1310805 -rw-rw-rw- 1 codespace codespace 21 Jul 3 13:49 hardlink.txt
+1310806 lrwxrwxrwx 1 codespace codespace 12 Jul 3 13:49 symlink.txt -> original.txt
+Explanation: This showed that deleting the original file removed the link to the inode for the hard link only indirectly, while the symbolic link became broken.
+
+12) cat hardlink.txt
+13) cat symlink.txt
+Output:
+Linux link test file
+cat: symlink.txt: No such file or directory
+Explanation: This demonstrated that a hard link still works after the original file is removed, but a symbolic link breaks because it points to the deleted target path.
+
+Observations
+============
+- The hard link shared the same inode as the original file and kept the data accessible.
+- The symbolic link had a different inode and pointed to the path original.txt.
+- Deleting the original file removed the target of the symbolic link, causing it to fail.
+- Hard links remain valid as long as at least one link exists to the inode.

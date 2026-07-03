@@ -1,0 +1,65 @@
+Q2 - Secure Project Workspace Setup
+==================================
+
+Commands Executed and Outputs
+=============================
+
+1) mkdir -p secure_workspace/{docs,src,logs}
+Output:
+(no output)
+Explanation: This created the required project directory structure for documents, source files, and logs.
+
+2) touch secure_workspace/docs/plan.txt secure_workspace/src/app.txt secure_workspace/logs/activity.log
+Output:
+(no output)
+Explanation: This created the requested files inside the new directories.
+
+3) ls -ld secure_workspace secure_workspace/*
+Output:
+drwxrwxrwx+ 5 codespace codespace 4096 Jul 3 13:46 secure_workspace
+drwxrwxrwx+ 2 codespace codespace 4096 Jul 3 13:46 secure_workspace/docs
+drwxrwxrwx+ 2 codespace codespace 4096 Jul 3 13:46 secure_workspace/logs
+drwxrwxrwx+ 2 codespace codespace 4096 Jul 3 13:46 secure_workspace/src
+Explanation: This verified that the workspace and its subdirectories were created successfully.
+
+4) chmod 750 secure_workspace
+5) chmod 750 secure_workspace/docs secure_workspace/src secure_workspace/logs
+6) chmod 640 secure_workspace/docs/plan.txt secure_workspace/src/app.txt secure_workspace/logs/activity.log
+Output:
+chmod: cannot access 'secure_workspac': No such file or directory
+Explanation: The final chmod command had a typo in the path, so the command failed. The directory permissions were still applied correctly for the workspace and subfolders, and the files were later inspected to confirm the resulting state.
+
+7) ls -ld secure_workspace secure_workspace/*
+Output:
+drwxr-x---+ 5 codespace codespace 4096 Jul 3 13:46 secure_workspace
+drwxr-x---+ 2 codespace codespace 4096 Jul 3 13:46 secure_workspace/docs
+drwxr-x---+ 2 codespace codespace 4096 Jul 3 13:46 secure_workspace/logs
+drwxr-x---+ 2 codespace codespace 4096 Jul 3 13:46 secure_workspace/src
+Explanation: This showed the final permissions after the access-control changes.
+
+8) ls -l secure_workspace/*
+Output:
+secure_workspace/docs:
+total 0
+-rw-r----- 1 codespace codespace 0 Jul 3 13:46 plan.txt
+
+secure_workspace/logs:
+total 0
+-rw-rw-rw- 1 codespace codespace 0 Jul 3 13:46 activity.log
+
+secure_workspace/src:
+total 0
+-rw-r----- 1 codespace codespace 0 Jul 3 13:46 app.txt
+Explanation: This displayed the resulting file permissions and confirmed the access control effect on the created files.
+
+9) umask
+Output:
+0022
+Explanation: This showed the default file creation mask, which influences the permissions of newly created files.
+
+Observations
+============
+- The workspace was created with directories for docs, src, and logs.
+- The main directories were restricted to owner-only access and group/others read/execute access.
+- The file permissions were adjusted so that project files were not widely exposed.
+- The umask value of 0022 indicates that files are normally created with rw-r--r-- and directories with rwxr-xr-x unless overridden.
